@@ -5,7 +5,7 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddStackExchangeRedisCache(options => //Kütüphaneyi ekledikten sonra redis projeye dahil edilir.
 {
-    options.Configuration = "localhost:6379";
+    options.Configuration = "localhost:6380";
 });
 
 var app = builder.Build();
