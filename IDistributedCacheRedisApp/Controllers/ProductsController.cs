@@ -34,7 +34,7 @@ namespace IDistributedCacheRedisApp.Controllers
 
             Byte[] byteproduct = Encoding.UTF8.GetBytes(jsonproduct); //Burada da istersek bu şekilde byte formatında kaydedebiliyoruz.
 
-            _distributedCache.Set("product:2", byteproduct); 
+            _distributedCache.Set("product:2", byteproduct);
 
             return View();
         }
@@ -63,6 +63,23 @@ namespace IDistributedCacheRedisApp.Controllers
             return View();
         }
 
+        //Image gibi büyük verileri byte dizisine çevirerek cache'leyebiliriz.
+        public IActionResult ImageCache()
+        {
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/download.jpg");
 
+            byte[] imageByte = System.IO.File.ReadAllBytes(path); //ReadAllBytes methodu ile yukardaki path'i byte dizisine çeviriyoruz.
+
+            _distributedCache.Set("resim", imageByte); //Set methodu ile cache'e atıyoruz.
+
+            return View();
+        }
+
+        public IActionResult ImageUrl()
+        {
+            byte[] imageByte = _distributedCache.Get("resim"); //Get methodu ile cache'den alıyoruz.
+            return File(imageByte, "image/jpg"); //File methodu ile byte dizisini image formatında döndürüyoruz.
+
+        }
     }
 }
